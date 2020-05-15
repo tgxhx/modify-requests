@@ -1,0 +1,44 @@
+{
+  "name": "modify-requests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "rimraf dist && cross-env NODE_ENV=development webpack-dev-server --watch --config webpack/webpack.dev.js",
+    "build": "rimraf dist && cross-env NODE_ENV=production webpack --config webpack/webpack.prod.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@material-ui/core": "^4.9.14",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "0.0.104",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
+    "copy-webpack-plugin": "^5.1.1",
+    "cross-env": "^7.0.2",
+    "css-loader": "^3.5.2",
+    "html-webpack-plugin": "^4.2.0",
+    "node-sass": "^4.13.1",
+    "normalize.css": "^8.0.1",
+    "post-compile-webpack-plugin": "^0.1.2",
+    "prettier": "^2.0.5",
+    "rimraf": "^3.0.2",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.1.4",
+    "styled-components": "^5.1.0",
+    "terser-webpack-plugin": "^2.3.5",
+    "ts-loader": "^7.0.1",
+    "tslint": "^6.1.1",
+    "typescript": "^3.8.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3",
+    "webpack-merge": "^4.2.2"
+  }
+}

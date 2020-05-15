@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "name": "modify-requests",
+  "manifest_version": 2,
+  "description": "A chrome extension that can modify request headers and body",
+  "browser_action": {
+    "default_title": "demo"
+  },
+  "icons": {
+    "16": "images/icon-16.png",
+    "48": "images/icon-48.png",
+    "128": "images/icon-128.png"
+  },
+  "background": {
+    "persistent": true,
+    "scripts": ["background.js"]
+  },
+  "options_page": "index.html",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "background",
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "js": ["contentscript.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "web_accessible_resources": ["inject.js"],
+  "content_security_policy": "default-src 'self'; script-src 'self' http://localhost:8000 https://localhost:8000; connect-src http://localhost:8000 ws://localhost:8000; style-src * 'unsafe-inline'; img-src 'self' data:;"
+}
