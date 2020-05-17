@@ -1,11 +1,13 @@
-import { getUrl } from './config';
+import { initConfig, getConfig } from './model';
+
+initConfig();
 
 async function initEventListener() {
-  const testUrl = await getUrl<string>();
-  console.log('testUrl', testUrl);
+  const config = (await getConfig()) || {};
+  const { modifiedUrls = [] } = config;
   chrome.webRequest.onBeforeSendHeaders.addListener(
     (details) => {
-      if (details.url === testUrl) {
+      if (modifiedUrls.some(({ url }) => details.url.includes(url))) {
         for (let i = 0; i < details.requestHeaders!.length; i++) {
           if (details.requestHeaders![i].name === 'Referer') {
             details.requestHeaders!.splice(i, 1);
@@ -25,12 +27,16 @@ async function initEventListener() {
 
   chrome.webRequest.onHeadersReceived.addListener(
     (details) => {
-      if (details.url === testUrl) {
+      if (modifiedUrls.some(({ url }) => details.url.includes(url))) {
         for (let i = 0; i < details.responseHeaders!.length; i++) {
-          if (details.responseHeaders![i].name === 'Server') {
-            details.responseHeaders![i].value += '1';
-          }
+          /*if (details.responseHeaders![i].name === 'access-control-allow-origin') {
+            details.responseHeaders![i].value = '*';
+          }*/
         }
+        details.responseHeaders?.push({
+          name: 'test-hader',
+          value: '111',
+        });
       }
       return {
         responseHeaders: details.responseHeaders,
@@ -44,3 +50,9 @@ async function initEventListener() {
 }
 
 initEventListener();
+
+chrome.browserAction.setPopup({ popup: '' });
+
+chrome.browserAction.onClicked.addListener(() => {
+  chrome.tabs.create({ url: 'options.html' });
+});

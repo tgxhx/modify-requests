@@ -12,11 +12,12 @@
     "128": "images/icon-128.png"
   },
   "background": {
-    "persistent": true,
-    "scripts": ["background.js"]
+    "scripts": ["background.js"],
+    "persistent": true
   },
-  "options_page": "index.html",
+  "options_page": "options.html",
   "permissions": [
+    "tabs",
     "activeTab",
     "storage",
     "background",
