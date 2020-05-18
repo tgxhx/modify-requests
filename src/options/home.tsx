@@ -25,7 +25,7 @@ export default function Home() {
   };
   return (
     <div>
-      <StyledAppBar open={open} position="fixed">
+      <StyledAppBar position="fixed">
         <Toolbar>
           <IconButton
             color="inherit"

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
-import { AppBar, AppBarProps, Drawer, DrawerProps } from '@material-ui/core';
+import { AppBar, Drawer, DrawerProps } from '@material-ui/core';
 import { Theme } from '@material-ui/core/styles';
 
 const drawerWidth = 300;
@@ -24,15 +24,9 @@ export const Article = styled.article<{ open: boolean; theme: Theme }>(
   `
 );
 
-export const StyledAppBar = styled(AppBar)<
-  AppBarProps & {
-    open: boolean;
-  }
->(
-  ({ open }) => css`
-    z-index: 1201;
-  `
-);
+export const StyledAppBar = styled(AppBar)`
+  z-index: 1201;
+`;
 
 export const StyledDrawer = styled(Drawer)<DrawerProps>`
   width: ${drawerWidth}px;
