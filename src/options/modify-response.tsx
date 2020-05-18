@@ -13,14 +13,14 @@ export default function ModifyResponse() {
   const [showAlert, setShowAlert] = React.useState<Color | null>(null);
   const [alertMessage, setAlertMessage] = React.useState('');
 
-  useEffect(() => {
-    getStorageConfig();
-  }, []);
-
   const getStorageConfig = async () => {
     const config = await getConfig();
     setConfig(config);
   };
+
+  useEffect(() => {
+    getStorageConfig();
+  }, []);
 
   const handleChange = (index: number) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
     setExpanded(isExpanded ? index : false);
@@ -29,6 +29,9 @@ export default function ModifyResponse() {
   const handleSetShowAlert = (type: Color, message: string) => {
     setShowAlert(type);
     setAlertMessage(message);
+    setTimeout(() => {
+      setShowAlert(null);
+    }, 3000);
   };
 
   const handleDeleteItem = async (index: number) => {
@@ -74,7 +77,7 @@ export default function ModifyResponse() {
           <StyledExpansionPanelSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1bh-content">
-            <StyledTypography>Add new</StyledTypography>
+            <StyledTypography>新增</StyledTypography>
           </StyledExpansionPanelSummary>
           <ExpansionPanelDetails>
             <ModifyResponseItem

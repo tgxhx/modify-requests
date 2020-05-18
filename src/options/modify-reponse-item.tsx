@@ -59,9 +59,13 @@ export default function ModifyResponseItem(props: Props) {
     modifiedJson: modifiedUrl?.body || '',
   });
 
-  useEffect(() => {
-    initEditor();
-  }, []);
+  const handleChangeJSONEditor = (editor: JSONEditor) => {
+    if (editor) {
+      const modifiedJson = editor.getText();
+      dispatch({ type: 'setJsonText', jsonText: modifiedJson });
+      dispatch({ type: 'setModifiedJson', modifiedJson });
+    }
+  };
 
   const initEditor = () => {
     if (jsonEditor.current) {
@@ -75,12 +79,9 @@ export default function ModifyResponseItem(props: Props) {
     }
   };
 
-  const handleChangeJSONEditor = (editor: JSONEditor) => {
-    if (editor) {
-      const modifiedJson = editor.getText();
-      dispatch({ type: 'setModifiedJson', modifiedJson });
-    }
-  };
+  useEffect(() => {
+    initEditor();
+  }, []);
 
   const handleFormat = () => {
     if (!jsonText) return;
@@ -112,7 +113,7 @@ export default function ModifyResponseItem(props: Props) {
       body: modifiedJson,
     };
 
-    if (!props.isNew) {
+    if (!props.isNew && props.index !== void 0) {
       const foundIndex = config.modifiedUrls?.findIndex((item, index) => {
         if (index === props.index) return false;
         return item.url === url;
@@ -140,6 +141,7 @@ export default function ModifyResponseItem(props: Props) {
     <StyledPanelDetail>
       <div>
         <TextField
+          required={true}
           id="standard-basic"
           value={name}
           label="NAME"
@@ -149,6 +151,7 @@ export default function ModifyResponseItem(props: Props) {
       </div>
       <div>
         <TextField
+          required={true}
           id="standard-basic"
           value={url}
           label="URL"
@@ -158,11 +161,13 @@ export default function ModifyResponseItem(props: Props) {
       </div>
       <div>
         <TextField
+          required={true}
           value={jsonText}
           multiline={true}
           rows={10}
           style={{ width: '100%' }}
-          placeholder="输入json字符串"
+          label="需要返回的JSON字符串"
+          helperText="可以通过开发者工具的Network面板复制请求的response到此处修改"
           onChange={(value) => {
             dispatch({ type: 'setJsonText', jsonText: value.target.value });
             dispatch({ type: 'setModifiedJson', modifiedJson: value.target.value });

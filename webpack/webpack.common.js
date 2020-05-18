@@ -33,7 +33,16 @@ module.exports = {
       {
         exclude: /node_modules/,
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: [
+          'cache-loader',
+          {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+            },
+          },
+          'ts-loader',
+        ],
       },
       {
         exclude: /node_modules\/(?!([normalize|jsoneditor]\.css)\/).*/,
