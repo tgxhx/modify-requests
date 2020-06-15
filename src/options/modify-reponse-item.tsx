@@ -20,6 +20,7 @@ interface States {
   url: string;
   jsonText: string;
   modifiedJson: string;
+  enable: boolean;
 }
 
 type Action =
@@ -27,7 +28,8 @@ type Action =
   | { type: 'setShow'; show: boolean }
   | { type: 'setUrl'; url: string }
   | { type: 'setJsonText'; jsonText: string }
-  | { type: 'setModifiedJson'; modifiedJson: string };
+  | { type: 'setModifiedJson'; modifiedJson: string }
+  | { type: 'setEnable'; enable: boolean };
 
 function reducer(state: States, action: Action): States {
   switch (action.type) {
@@ -41,6 +43,8 @@ function reducer(state: States, action: Action): States {
       return { ...state, jsonText: action.jsonText };
     case 'setModifiedJson':
       return { ...state, modifiedJson: action.modifiedJson };
+    case 'setEnable':
+      return { ...state, enable: action.enable };
     default:
       return state;
   }
@@ -51,12 +55,13 @@ export default function ModifyResponseItem(props: Props) {
 
   const jsonEditor = useRef<HTMLDivElement | null>(null);
   const [editor, setEditor] = useState<JSONEditor | undefined>();
-  const [{ show, name, url, jsonText, modifiedJson }, dispatch] = useReducer(reducer, {
+  const [{ show, name, url, jsonText, modifiedJson, enable }, dispatch] = useReducer(reducer, {
     name: modifiedUrl?.name || '',
     show: false,
     url: modifiedUrl?.url || '',
     jsonText: modifiedUrl?.body || '',
     modifiedJson: modifiedUrl?.body || '',
+    enable: typeof modifiedUrl?.enable === 'undefined' ? true : modifiedUrl?.enable,
   });
 
   const handleChangeJSONEditor = (editor: JSONEditor) => {
@@ -111,6 +116,7 @@ export default function ModifyResponseItem(props: Props) {
       name,
       url,
       body: modifiedJson,
+      enable,
     };
 
     if (!props.isNew && props.index !== void 0) {
@@ -130,6 +136,10 @@ export default function ModifyResponseItem(props: Props) {
       if (foundIndex === -1) {
         props.handleSetShowAlert('success', '添加成功');
         config.modifiedUrls?.push(item);
+        dispatch({ type: 'name', name: '' });
+        dispatch({ type: 'setUrl', url: '' });
+        dispatch({ type: 'setJsonText', jsonText: '' });
+        dispatch({ type: 'setModifiedJson', modifiedJson: '' });
       } else {
         return props.handleSetShowAlert('error', 'url已存在');
       }

@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import { ExpansionPanel, ExpansionPanelDetails, Snackbar } from '@material-ui/core';
-import { ExpandMore as ExpandMoreIcon, Delete as DeleteIcon } from '@material-ui/icons';
+import {
+  ExpandMore as ExpandMoreIcon,
+  Delete as DeleteIcon,
+  CheckBox as CheckBoxIcon,
+  CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon,
+} from '@material-ui/icons';
 import { StyledExpansionPanelSummary, StyledList, StyledTypography } from './modify-response-style';
 import ModifyResponseItem from './modify-reponse-item';
 import { getConfig, setConfig as setConfigModel } from '../model';
@@ -42,6 +47,14 @@ export default function ModifyResponse() {
     }
   };
 
+  const handleEnable = async (index: number, enable: boolean) => {
+    if (config && config.modifiedUrls && config.modifiedUrls?.[index]) {
+      config.modifiedUrls[index].enable = enable;
+      await setConfigModel(config);
+      getStorageConfig();
+    }
+  };
+
   const addItemIndex = (config?.modifiedUrls?.length || 0) + 1;
   return (
     <div>
@@ -55,7 +68,15 @@ export default function ModifyResponse() {
               <StyledTypography second={1}>{item.url}</StyledTypography>
               <StyledTypography
                 remove={1}
-                onClick={(event) => {
+                onClick={(event: { stopPropagation: () => void }) => {
+                  event.stopPropagation();
+                  handleEnable(index, !item.enable);
+                }}>
+                {item.enable ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
+              </StyledTypography>
+              <StyledTypography
+                remove={1}
+                onClick={(event: { stopPropagation: () => void }) => {
                   event.stopPropagation();
                   handleDeleteItem(index);
                 }}>

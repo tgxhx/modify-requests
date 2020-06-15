@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import 'jsoneditor/dist/jsoneditor.min.css';
 import {
   Container,
@@ -12,7 +12,7 @@ import {
   ListItemIcon,
 } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
-import { Menu as MenuIcon, FormatListBulleted as FormatListBulletedIcon } from '@material-ui/icons';
+import { Menu as MenuIcon, Create as CreateIcon } from '@material-ui/icons';
 import { Article, StyledAppBar, StyledDrawer, StyledLink } from './home-style';
 import ModifyResponse from './modify-response';
 
@@ -35,7 +35,7 @@ export default function Home() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Modify Requests
+            Modify Request and Response
           </Typography>
         </Toolbar>
       </StyledAppBar>
@@ -50,9 +50,15 @@ export default function Home() {
         <List>
           <ListItem button>
             <ListItemIcon>
-              <FormatListBulletedIcon />
+              <CreateIcon />
             </ListItemIcon>
-            <ListItemText primary={<StyledLink to="/">修改返回值</StyledLink>} />
+            <ListItemText primary={<StyledLink to="/response">修改返回值</StyledLink>} />
+          </ListItem>
+          <ListItem button>
+            <ListItemIcon>
+              <CreateIcon />
+            </ListItemIcon>
+            <ListItemText primary={<StyledLink to="/request">修改请求值</StyledLink>} />
           </ListItem>
         </List>
       </StyledDrawer>
@@ -61,9 +67,12 @@ export default function Home() {
         <Container>
           <Switch>
             <Route path="/" exact={true}>
+              <Redirect to="/response" />
+            </Route>
+            <Route path="/response">
               <ModifyResponse />
             </Route>
-            <Route>
+            <Route path="/request">
               <ModifyResponse />
             </Route>
           </Switch>

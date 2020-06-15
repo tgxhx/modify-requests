@@ -7,12 +7,15 @@ async function initEventListener() {
   const { modifiedUrls = [] } = config;
   chrome.webRequest.onBeforeSendHeaders.addListener(
     (details) => {
-      if (modifiedUrls.some(({ url }) => details.url.includes(url))) {
-        for (let i = 0; i < details.requestHeaders!.length; i++) {
-          if (details.requestHeaders![i].name === 'Referer') {
-            details.requestHeaders!.splice(i, 1);
-            break;
-          }
+      if (
+        details?.requestHeaders?.length &&
+        modifiedUrls.some(({ url }) => details.url.includes(url))
+      ) {
+        for (let i = 0; i < details.requestHeaders.length; i++) {
+          // if (details.requestHeaders[i].name === 'Referer') {
+          //   details.requestHeaders.splice(i, 1);
+          //   break;
+          // }
         }
       }
       return {
@@ -27,8 +30,11 @@ async function initEventListener() {
 
   chrome.webRequest.onHeadersReceived.addListener(
     (details) => {
-      if (modifiedUrls.some(({ url }) => details.url.includes(url))) {
-        for (let i = 0; i < details.responseHeaders!.length; i++) {
+      if (
+        details?.responseHeaders?.length &&
+        modifiedUrls.some(({ url }) => details.url.includes(url))
+      ) {
+        for (let i = 0; i < details.responseHeaders.length; i++) {
           /*if (details.responseHeaders![i].name === 'access-control-allow-origin') {
             details.responseHeaders![i].value = '*';
           }*/

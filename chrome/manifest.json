@@ -1,8 +1,8 @@
 {
   "version": "1.0.0",
-  "name": "modify-requests",
+  "name": "Modify Request and Response",
   "manifest_version": 2,
-  "description": "A chrome extension that can modify request headers and body",
+  "description": "A chrome extension that can modify request and response",
   "browser_action": {
     "default_title": "demo"
   },
@@ -28,7 +28,8 @@
   "content_scripts": [
     {
       "js": ["contentscript.js"],
-      "matches": ["<all_urls>"]
+      "matches": ["<all_urls>"],
+      "run_at": "document_start"
     }
   ],
   "web_accessible_resources": ["inject.js"],

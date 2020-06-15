@@ -4,15 +4,17 @@ import { getConfig } from './model';
   const injectedCode = `
    window._injectedConfig = ${JSON.stringify(await getConfig())}
   `;
-  let script = document.createElement('script');
+  const script = document.createElement('script');
   script.textContent = injectedCode;
   (document.head || document.documentElement).appendChild(script);
-  script.remove();
-
-  script = document.createElement('script');
-  script.src = chrome.runtime.getURL('inject.js');
   script.onload = function () {
     script.parentNode?.removeChild(script);
   };
-  (document.head || document.documentElement).appendChild(script);
+
+  const inject = document.createElement('script');
+  inject.src = chrome.runtime.getURL('inject.js');
+  (document.head || document.documentElement).appendChild(inject);
+  inject.onload = function () {
+    inject.parentNode?.removeChild(inject);
+  };
 })();

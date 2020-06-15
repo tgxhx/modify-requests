@@ -10,6 +10,7 @@ interface ModifiedUrlModel {
   requestHeaders?: Record<string, string>;
   responseHeaders?: Record<string, string>;
   body?: string;
+  enable: boolean;
 }
 
 interface ConfigModel {
